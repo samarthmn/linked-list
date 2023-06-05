@@ -2,11 +2,13 @@ use linked_list::singly::SinglyLinkedList;
 use std::io::stdin;
 enum MainMenu {
     SinglyLinkedList,
+    DoublyLinkedList,
+    CircularLinkedList,
+    CircularDoublyLinkedList,
     Exit,
 }
 
 fn main() {
-    // let mut signly_list = SinglyLinkedList::new();
     let mut menu_selected: Option<MainMenu> = None;
     let mut singly_linked_list = SinglyLinkedList::new();
     loop {
@@ -16,7 +18,10 @@ fn main() {
                 let num = get_input();
                 match num {
                     1 => menu_selected = Some(MainMenu::SinglyLinkedList),
-                    2 => menu_selected = Some(MainMenu::Exit),
+                    2 => menu_selected = Some(MainMenu::DoublyLinkedList),
+                    3 => menu_selected = Some(MainMenu::CircularLinkedList),
+                    4 => menu_selected = Some(MainMenu::CircularDoublyLinkedList),
+                    5 => menu_selected = Some(MainMenu::Exit),
                     _ => print_invalid_input(),
                 }
             }
@@ -46,6 +51,18 @@ fn main() {
                         _ => print_invalid_input(),
                     }
                 }
+                MainMenu::DoublyLinkedList => {
+                    println!("Not yet implemented");
+                    menu_selected = None;
+                }
+                MainMenu::CircularLinkedList => {
+                    println!("Not yet implemented");
+                    menu_selected = None;
+                }
+                MainMenu::CircularDoublyLinkedList => {
+                    println!("Not yet implemented");
+                    menu_selected = None;
+                }
                 MainMenu::Exit => {
                     break;
                 }
@@ -66,9 +83,23 @@ fn print_invalid_input() {
 }
 
 fn print_main_menu() {
-    println!("Select linked list - \n\t 1. Singly Linked List\n\t 2. Exit");
+    println!(
+        "Select linked list - 
+        1. Singly Linked List
+        2. Doubly Linked List (Not implemented)
+        3. Circular Linked List(Not implemented)
+        4. Circular Doubly Linked List(Not implemented)
+        5. Exit"
+    );
 }
 
 fn print_singly_list_menu() {
-    println!("Chose your action - \n\t 1. Add item\n\t 2. Delete item\n\t 3. View last item\n\t 4. View all items\n\t 5. Back");
+    println!(
+        "Chose your action - 
+        1. Add item
+        2. Delete item
+        3. View last item
+        4. View all items
+        5. Back"
+    );
 }
