@@ -32,8 +32,8 @@ fn main() {
                     match num {
                         1 => {
                             println!("Enter the element:");
-                            let num = get_input();
-                            singly_linked_list.add(num);
+                            let element = get_input();
+                            singly_linked_list.add(element);
                         }
                         2 => {
                             singly_linked_list.remove();

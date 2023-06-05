@@ -1,29 +1,29 @@
 #[derive(Debug)]
-pub struct SinglyLinkedList {
-    node: NodePointer,
+pub struct SinglyLinkedList<T: std::fmt::Debug + std::marker::Copy> {
+    node: NodePointer<T>,
 }
 
 #[derive(Debug)]
-struct Node {
-    element: i32,
-    next: NodePointer,
+struct Node<T: std::fmt::Debug + std::marker::Copy> {
+    element: T,
+    next: NodePointer<T>,
 }
 
-type NodePointer = Option<Box<Node>>;
+type NodePointer<T> = Option<Box<Node<T>>>;
 
-impl SinglyLinkedList {
-    pub fn new() -> SinglyLinkedList {
+impl<T: std::fmt::Debug + std::marker::Copy> SinglyLinkedList<T> {
+    pub fn new() -> SinglyLinkedList<T> {
         SinglyLinkedList { node: None }
     }
 
-    fn create_node(element: i32, node: NodePointer) -> NodePointer {
+    fn create_node(element: T, node: NodePointer<T>) -> NodePointer<T> {
         Some(Box::new(Node {
             element,
             next: node,
         }))
     }
 
-    pub fn add(&mut self, element: i32) {
+    pub fn add(&mut self, element: T) {
         let current_node = self.node.take();
         let new_node = Self::create_node(element, current_node);
         self.node = new_node;
@@ -51,7 +51,7 @@ impl SinglyLinkedList {
 
     pub fn view_all_nodes(&self) {
         let mut selected_node = &self.node;
-        let mut all_nodes: Vec<i32> = Vec::new();
+        let mut all_nodes: Vec<T> = Vec::new();
         loop {
             match selected_node {
                 Some(node) => {
@@ -61,6 +61,6 @@ impl SinglyLinkedList {
                 None => break,
             };
         }
-        println!("List: {:?}", all_nodes.iter().rev().collect::<Vec<&i32>>())
+        println!("List: {:?}", all_nodes.iter().rev().collect::<Vec<&T>>())
     }
 }
