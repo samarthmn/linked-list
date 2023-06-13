@@ -1,16 +1,15 @@
-use linked_list::singly::SinglyLinkedList;
+use linked_list::{doubly::DoublyLinkedList, singly::SinglyLinkedList};
 use std::io::stdin;
 enum MainMenu {
     SinglyLinkedList,
     DoublyLinkedList,
-    CircularLinkedList,
-    CircularDoublyLinkedList,
     Exit,
 }
 
 fn main() {
     let mut menu_selected: Option<MainMenu> = None;
-    let mut singly_linked_list = SinglyLinkedList::new();
+    let mut singly_linked_list: SinglyLinkedList<i32> = SinglyLinkedList::new();
+    let mut doubly_linked_list: DoublyLinkedList<i32> = DoublyLinkedList::new();
     loop {
         match menu_selected {
             None => {
@@ -19,9 +18,7 @@ fn main() {
                 match num {
                     1 => menu_selected = Some(MainMenu::SinglyLinkedList),
                     2 => menu_selected = Some(MainMenu::DoublyLinkedList),
-                    3 => menu_selected = Some(MainMenu::CircularLinkedList),
-                    4 => menu_selected = Some(MainMenu::CircularDoublyLinkedList),
-                    5 => menu_selected = Some(MainMenu::Exit),
+                    3 => menu_selected = Some(MainMenu::Exit),
                     _ => print_invalid_input(),
                 }
             }
@@ -39,12 +36,9 @@ fn main() {
                             singly_linked_list.remove();
                         }
                         3 => {
-                            singly_linked_list.view_last_node();
-                        }
-                        4 => {
                             singly_linked_list.view_all_nodes();
                         }
-                        5 => {
+                        4 => {
                             singly_linked_list = SinglyLinkedList::new();
                             menu_selected = None;
                         }
@@ -52,16 +46,34 @@ fn main() {
                     }
                 }
                 MainMenu::DoublyLinkedList => {
-                    println!("Not yet implemented");
-                    menu_selected = None;
-                }
-                MainMenu::CircularLinkedList => {
-                    println!("Not yet implemented");
-                    menu_selected = None;
-                }
-                MainMenu::CircularDoublyLinkedList => {
-                    println!("Not yet implemented");
-                    menu_selected = None;
+                    print_doubly_list_menu();
+                    let num = get_input();
+                    match num {
+                        1 => {
+                            println!("Enter the element:");
+                            let element = get_input();
+                            doubly_linked_list.add_to_head(element);
+                        }
+                        2 => {
+                            doubly_linked_list.remove_from_head();
+                        }
+                        3 => {
+                            println!("Enter the element:");
+                            let element = get_input();
+                            doubly_linked_list.add_to_tail(element);
+                        }
+                        4 => {
+                            doubly_linked_list.remove_from_tail();
+                        }
+                        5 => {
+                            doubly_linked_list.view_all_nodes();
+                        }
+                        6 => {
+                            doubly_linked_list = DoublyLinkedList::new();
+                            menu_selected = None;
+                        }
+                        _ => print_invalid_input(),
+                    }
                 }
                 MainMenu::Exit => {
                     break;
@@ -86,10 +98,8 @@ fn print_main_menu() {
     println!(
         "Select linked list - 
         1. Singly Linked List
-        2. Doubly Linked List (Not implemented)
-        3. Circular Linked List(Not implemented)
-        4. Circular Doubly Linked List(Not implemented)
-        5. Exit"
+        2. Doubly Linked List
+        3. Exit"
     );
 }
 
@@ -97,9 +107,20 @@ fn print_singly_list_menu() {
     println!(
         "Chose your action - 
         1. Add item
-        2. Delete item
-        3. View last item
-        4. View all items
-        5. Back"
+        2. Remove item
+        3. View all items
+        4. Back"
+    );
+}
+
+fn print_doubly_list_menu() {
+    println!(
+        "Chose your action - 
+        1. Add item in front
+        2. Remove item from front
+        3. Add item in back
+        4. Remove item from back
+        5. View items
+        6. Back"
     );
 }

@@ -1,17 +1,17 @@
 #[derive(Debug)]
-pub struct SinglyLinkedList<T: std::fmt::Debug + std::marker::Copy> {
+pub struct SinglyLinkedList<T: std::fmt::Debug + std::marker::Copy + std::fmt::Display> {
     node: NodePointer<T>,
 }
 
 #[derive(Debug)]
-struct Node<T: std::fmt::Debug + std::marker::Copy> {
+struct Node<T: std::fmt::Debug + std::marker::Copy + std::fmt::Display> {
     element: T,
     next: NodePointer<T>,
 }
 
 type NodePointer<T> = Option<Box<Node<T>>>;
 
-impl<T: std::fmt::Debug + std::marker::Copy> SinglyLinkedList<T> {
+impl<T: std::fmt::Debug + std::marker::Copy + std::fmt::Display> SinglyLinkedList<T> {
     pub fn new() -> SinglyLinkedList<T> {
         SinglyLinkedList { node: None }
     }
@@ -27,6 +27,8 @@ impl<T: std::fmt::Debug + std::marker::Copy> SinglyLinkedList<T> {
         let current_node = self.node.take();
         let new_node = Self::create_node(element, current_node);
         self.node = new_node;
+        print!("Updated List: ");
+        self.view_all_nodes();
     }
 
     pub fn remove(&mut self) {
@@ -36,31 +38,29 @@ impl<T: std::fmt::Debug + std::marker::Copy> SinglyLinkedList<T> {
             None => None,
         };
         self.node = new_node;
-    }
-
-    pub fn view_last_node(&self) {
-        match &self.node {
-            Some(node) => {
-                println!("Element: {:?}", node.element)
-            }
-            None => {
-                println!("None")
-            }
-        }
+        print!("Updated List: ");
+        self.view_all_nodes();
     }
 
     pub fn view_all_nodes(&self) {
         let mut selected_node = &self.node;
-        let mut all_nodes: Vec<T> = Vec::new();
         loop {
             match selected_node {
                 Some(node) => {
-                    all_nodes.push(node.element);
+                    print!("{}", node.element);
+                    if node.clone().next.is_some() {
+                        print!(" - ");
+                    }
                     selected_node = &node.next;
                 }
-                None => break,
+                None => {
+                    println!("");
+                    break;
+                }
             };
         }
-        println!("List: {:?}", all_nodes.iter().rev().collect::<Vec<&T>>())
+        if self.node.is_none() {
+            println!("Empty");
+        }
     }
 }
